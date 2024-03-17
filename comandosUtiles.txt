@@ -1,0 +1,12 @@
+-- Asignación de permisos necesaria
+chmod 400 "restart-project-keypair.pem"
+-- Comando de conexión (Debe especificar la ubicación de la keypair)
+ssh -i "D:\24-0\LabsReStart\reStartProject\restart-project-keypair.pem" ubuntu@ec2-35-161-95-109.us-west-2.compute.amazonaws.com
+
+-- Instalación de proveedor
+pip install apache-airflow-providers-amazon 
+
+-- Para reiniciar airflow
+sudo pkill gunicorn
+ps aux | grep gunicorn
+airflow standalone
