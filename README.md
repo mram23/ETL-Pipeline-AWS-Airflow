@@ -11,7 +11,7 @@ Apache Airflow es una plataforma de código abierto que se utiliza para orquesta
 
 Tú puedes tener una serie de flujos de trabajo en su pipeline. Tomemos por ejemplo que usted está haciendo alguna extracción de una base de datos Postgres o que está extrayendo de la API. Esta es una tarea de aquí, y luego de eso, cuando usted consigue sus datos, que desea hacer alguna transformación ya sea una transformación simple o una transformación compleja, y luego los datos que tiene, que desea cargar tal vez como un archivo .csv o como un archivo de parquet en su cubo de Amazon S3, o cualquier plataforma que desea cargarlo. Este es su flujo de trabajo:
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/1f5fabd1-5ee5-4826-bf8b-4804515f020b/bec200db-08e1-4514-91d3-1956b8bfe246/Untitled.png)
+![image](https://github.com/mram23/ETL-Pipeline-AWS-Airflow/assets/132526921/6154bcee-5a6f-4e77-a03e-ccd42a021302)
 
 Es decir, Airflow proporciona una forma de crear, programar y monitorizar flujos de trabajo mediante programación. Esto significa que usted puede comprobar sus registros y averiguar cuál era el problema, entonces usted puede arreglarlo. Y así puedes seguir ejecutando su flujo de trabajo. 
 
@@ -21,7 +21,7 @@ DAG significa Directed Acyclic Graph. Representa una colección de **tareas** y 
 
 Podemos ver que cada nodo representa una tarea, por lo que el DAG está formado por nodos y flechas dirigidas / dependencias. Podemos ver, por ejemplo, cuando el Nodo 1 se completa, entonces va al Nodo 2. Desde el Nodo 2 va al Nodo 4, ¿verdad? Pero el Nodo 4 no se ejecutará si el Nodo 3 no se ejecutó. Como puedes ver el Nodo 2 y el Nodo 3 van al Nodo 4. Así que el Nodo 3 y el Nodo 2 necesitan ejecutarse antes de que el Nodo 4 se ejecute. Y el Nodo 4 necesita ejecutarse, antes de que el Nodo 5 se ejecute.
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/1f5fabd1-5ee5-4826-bf8b-4804515f020b/85f21c2a-61c9-4bb4-b1dd-0037dd12580a/Untitled.png)
+![image](https://github.com/mram23/ETL-Pipeline-AWS-Airflow/assets/132526921/79873c06-ab83-42d8-acc4-ad6c54e554bf)
 
 Y un DAG define el orden en que deben ejecutarse estas tareas (nodos) y las dependencias entre ellas. Pero, ¿qué significa que un DAG sea acíclico? Significa que cuando se está en el Nodo 5, no se puede volver al Nodo 4. O el Nodo 5 va al Nodo 2 o al Nodo 3. Eso no puede suceder. No es así como funciona un DAG, es **acíclico**, no es un ciclo. Así que va en una sola dirección.
 
@@ -29,7 +29,7 @@ Ahora, echemos un vistazo a lo que son los **Operadores**.
 
 Esas tareas de las que hablamos en el DAG, son básicamente operadores. Y hay diferentes tipos de operadores. Uno de ellos es un operador python, otro es un operador sensor.
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/1f5fabd1-5ee5-4826-bf8b-4804515f020b/3396d7f9-37eb-4842-b9ac-17bb30279267/Untitled.png)
+![image](https://github.com/mram23/ETL-Pipeline-AWS-Airflow/assets/132526921/c7af9f3a-2e6d-4f93-8d7e-ec11b40fa55e)
 
 Por ejemplo, la Tarea 1, es un operador python que te ayuda a ejecutar una función python que extrae datos de la API o quizás de una base de datos. También podría haber un operador python que te ayude a ejecutar una función que realice alguna transformación en tus datos.
 
@@ -51,7 +51,7 @@ Luego podemos cargar los datos transformados dentro de un clúster de Amazon Red
 
 Entonces, algo así será nuestro DAG
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/1f5fabd1-5ee5-4826-bf8b-4804515f020b/e416c772-db51-4257-bc36-6dcfcf3312d7/Untitled.png)
+![image](https://github.com/mram23/ETL-Pipeline-AWS-Airflow/assets/132526921/3bec8540-84a7-4090-9752-056b362b9acc)
 
 Va a haber un operador python que se va a conectar a la RapidAPI de Zillow, que va a extraer los datos a nuestra Instancia EC2.
 
@@ -65,25 +65,24 @@ Luego, podemos tener otra tarea que implicará la carga de los datos en Redshift
 
 Lo primero que vamos a hacer es crear un Grupo. ¿Por qué? En la industria por lo general no va a utilizar su usuario root para ejecutar / crear proyectos. Vamos a asignar usuarios a grupos. Esto lo hacemos en IAM: 
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/1f5fabd1-5ee5-4826-bf8b-4804515f020b/53fa25f8-f913-4df0-aaa9-1d1ded4e2ee6/Untitled.png)
+![image](https://github.com/mram23/ETL-Pipeline-AWS-Airflow/assets/132526921/ceee8161-1b02-4ca7-a762-b8e3a4a95963)
 
 Después de crear ese grupo, lo siguiente que queremos hacer es crear usuarios.
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/1f5fabd1-5ee5-4826-bf8b-4804515f020b/f3c85637-f51a-4b16-90ea-81de4e752c31/Untitled.png)
+![image](https://github.com/mram23/ETL-Pipeline-AWS-Airflow/assets/132526921/9d1a3bf2-445f-47c0-b6d0-eb07f311ed00)
 
 Este usuario ahora va a tener acceso administrativo, porque tiene las políticas del grupo adjuntas.
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/1f5fabd1-5ee5-4826-bf8b-4804515f020b/610418a6-1998-423a-a6be-93f98f26946b/Untitled.png)
-
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/1f5fabd1-5ee5-4826-bf8b-4804515f020b/593a8081-3adc-4a14-93c6-7af5d3d33f4a/Untitled.png)
+![image](https://github.com/mram23/ETL-Pipeline-AWS-Airflow/assets/132526921/1748c001-0a9c-472c-a617-b7a8a880dde6)
+![image](https://github.com/mram23/ETL-Pipeline-AWS-Airflow/assets/132526921/4c0b9808-4663-49ba-9729-a64b29298b3b)
 
 Vamos a crear la clave de acceso y la clave de acceso secreta para este usuario en particular
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/1f5fabd1-5ee5-4826-bf8b-4804515f020b/bffb3b46-4e0a-4806-b9e4-88755390dda4/Untitled.png)
+![image](https://github.com/mram23/ETL-Pipeline-AWS-Airflow/assets/132526921/08fab3e8-0dce-4d61-8e75-8ec08ca451e8)
 
 Luego, nos logeamos con nuestro usuario creado 
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/1f5fabd1-5ee5-4826-bf8b-4804515f020b/bb8bdf6b-0081-4a0d-85c2-e07a4cd948e3/Untitled.png)
+![image](https://github.com/mram23/ETL-Pipeline-AWS-Airflow/assets/132526921/df6fbe91-4367-4732-82f2-c71df6436274)
 
 OJO: Vamos a trabajar todo en la región Oregon (us-west-2)
 
