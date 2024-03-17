@@ -314,8 +314,8 @@ A continuación, dentro de esta carpeta de airflow, vamos a crear un archivo Jso
 
 ```python
 {
-"X-RapidAPI-Key": "dec1a95d49msh8c8217117630a07p1f9fd2jsnfe0133198fa4",
-	"X-RapidAPI-Host": "zillow56.p.rapidapi.com"
+"X-RapidAPI-Key": "dec1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+"X-RapidAPI-Host": "zillow56.p.rapidapi.com"
 }
 
 ```
